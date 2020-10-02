@@ -31,21 +31,9 @@ clean :
 	cd utils; $(MAKE) clean;
 	cd data; $(MAKE) clean;
 	rm -f *~ $(OBJS) $(NAME)
+	rm -f opkdata/$(NAME)
+	rm -f TuxPuck.opk
 
-dist :
-	$(MAKE) clean
-	mkdir $(NAME)-$(VERSION)
-	cp $(CSOURCES) $(INCLUDES) readme.txt todo.txt thanks.txt \
-	  COPYING Makefile $(NAME)-$(VERSION)
-	cp -R man utils data $(NAME)-$(VERSION)
-	tar -cf $(NAME)-$(VERSION).tar $(NAME)-$(VERSION)
-	tar -f $(NAME)-$(VERSION).tar --delete \
-	  `tar -tf $(NAME)-*.tar | grep -w -e ".svn/"`
-	gzip -9 $(NAME)-$(VERSION).tar
-	rm -Rf $(NAME)-$(VERSION)
-
-install : $(NAME)
-	install -d $(DESTDIR)/usr/bin
-	install -d $(DESTDIR)/usr/man/man6
-	install -m755 $(NAME) $(DESTDIR)/usr/bin
-	install -m644 man/$(NAME).6.gz $(DESTDIR)/usr/man/man6
+opk : $(NAME)
+	cp -f $(NAME) opkdata
+	mksquashfs opkdata TuxPuck.opk

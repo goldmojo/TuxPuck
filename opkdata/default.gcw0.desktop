@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=TuxPuck
+Comment=TuxPuck for RG350
+Exec=./tuxpuck
+Terminal=false
+Type=games
+StartupNotify=true
+Icon=icon
+Categories=games
+X-OD-NeedsDownscaling=true
