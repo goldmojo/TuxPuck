@@ -23,9 +23,9 @@ libdata.a : $(OBJS)
 
 $(SOURCES):
 	cd ../utils/; $(MAKE)
-	../utils/ttf2font ttfs/mono.ttf monos.fnt 30 30
+	../utils/ttf2font ttfs/mono.ttf monos.fnt 12 12
 	../utils/data2c monos.fnt monos_fnt
-	../utils/ttf2font ttfs/mono.ttf monob.fnt 45 45
+	../utils/ttf2font ttfs/mono.ttf monob.fnt 16 16
 	../utils/data2c monob.fnt monob_fnt
 	rm *.fnt
 	../utils/data2c jpgs/title.jpg title_jpg

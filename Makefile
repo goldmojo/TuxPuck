@@ -36,4 +36,5 @@ clean :
 
 opk : $(NAME)
 	cp -f $(NAME) opkdata
+	rm -f TuxPuck.opk
 	mksquashfs opkdata TuxPuck.opk

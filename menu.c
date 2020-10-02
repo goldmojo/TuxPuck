@@ -11,8 +11,8 @@
 /* defines */
 #define BORDER_SIZE	5
 #define BORDER_COLOR	(video_map_rgb(170, 140, 110))
-#define BORDER_SPACING	20
-#define FIELD_SPACING	15
+#define BORDER_SPACING	6
+#define FIELD_SPACING	7
 
 /* structs */
 struct _Menu {
@@ -148,19 +148,25 @@ int menu_get_selected(Menu * menu) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
+				/* SELECT or B */
 				case SDLK_ESCAPE:
+				case SDLK_LALT:
 					menu->selected = -1;
 					loop = 0;
 					break;
+				/* START or A */
 				case SDLK_RETURN:
+				case SDLK_LCTRL:
 					loop = 0;
 					break;
+				/* UP */
 				case SDLK_UP:
 					_menu_select_previous(menu);
 					video_blit(background, &rect, &rect);
 					_menu_blit(menu, NULL);
 					video_update();
 					break;
+				/* DOWN */
 				case SDLK_DOWN:
 					_menu_select_next(menu);
 					video_blit(background, &rect, &rect);
