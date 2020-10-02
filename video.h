@@ -9,10 +9,10 @@
 /* ___defines___ */
 
 /*Width of the screen*/
-#define SCREEN_W	((Uint32)640)
+#define SCREEN_W	((Uint32)320)
 
 /*Heights of the screen.*/
-#define SCREEN_H	((Uint32)480)
+#define SCREEN_H	((Uint32)240)
 
 /* functions */
 int video_init(void);
@@ -28,7 +28,6 @@ void video_erase(SDL_Rect *);
 void video_save(void);
 void video_update(void);
 void video_restore(void);
-void video_toggle_fullscreen(void);
 Uint32 video_map_rgb(Uint8, Uint8, Uint8);
 /* effects */
 void video_box_up(SDL_Surface *, Uint32);

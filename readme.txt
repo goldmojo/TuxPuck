@@ -34,6 +34,6 @@ TuxPuck - www.efd.lth.se/~d00jkr/tuxpuck/
  - Usage
 
  MOUSE	Move the pad
- F	Toggle fullscreen
- F1	Toggle sound on/off
- F5/F6	Change mouse speed
+ START	Toggle sound on/off
+ L2/R2	Change mouse speed
+ SELECT Exit game

@@ -143,21 +143,6 @@ SDL_Surface *video_duplicate(void)
   return screen;
 }
 
-void video_toggle_fullscreen(void)
-{
- if( SDL_WM_ToggleFullScreen(_screen)==0){
-	 printf("Failed to toggle to fullscreen mode:");
-	 printf(SDL_GetError() );
-	 printf("\n");
- };
-/*  surface=SDL_SetVideoMode(surface->w,surface->h,surface->format->BitsPerPixel,SDL_HWSURFACE|(surface->flags&SDL_FULLSCREEN?0:SDL_FULLSCREEN));*/
-
-
-
-
-
-}
-
 Uint32 video_map_rgb(Uint8 r, Uint8 g, Uint8 b)
 {
   return SDL_MapRGB(_screen->format, r, g, b);

@@ -1,8 +1,6 @@
 Todo list (ordered in sinking priority) :
 =========================================
 
- * Switch screen-resolutions / Switch to fullscreen
- 
  * Add possibility to select menu items with the mouse
  
  * Add animations: 

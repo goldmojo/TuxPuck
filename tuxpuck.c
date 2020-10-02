@@ -10,25 +10,17 @@
 #include "tuxpuck.h"
 
 /* defines */
-#ifdef windows
-#define SETTINGSFILE "tuxpuck.ini"
-#else
 #define SETTINGSFILE _settings_file
-#endif
 
 /* structs */
 typedef struct {
 	Uint8 sound;
-	Uint8 fullscreen;
 	Uint8 mouse_speed;
 } Settings;
 
 /* statics */
 static Settings *_settings = NULL;
-
-#ifndef windows
 static char _settings_file[200];
-#endif
 
 /* Returns a pointer to the selected AI opponent.
  *
@@ -161,6 +153,7 @@ static int _play_match(Uint8 opponent) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
+				/* SELECT */
 				case SDLK_ESCAPE:
 
 					SDL_ShowCursor(SDL_ENABLE);
@@ -168,25 +161,24 @@ static int _play_match(Uint8 opponent) {
 						loop = 0;
 					timer_reset(timer);
 					break;
-				case SDLK_F1:
+				/* START */
+				case SDLK_RETURN:
 					_settings->sound = !_settings->sound;
 					audio_set_mute(!_settings->sound);
 					break;
-				case SDLK_F5:
+				/* L2 */
+				case SDLK_PAGEUP:
 					if (_settings->mouse_speed > 1)
 						_settings->mouse_speed--;
 					human_set_speed(p1, _settings->mouse_speed);
 					scoreboard_set_mousebar(_settings->mouse_speed);
 					break;
-				case SDLK_F6:
+				/* R2 */
+				case SDLK_PAGEDOWN:
 					if (_settings->mouse_speed < 10)
 						_settings->mouse_speed++;
 					human_set_speed(p1, _settings->mouse_speed);
 					scoreboard_set_mousebar(_settings->mouse_speed);
-					break;
-				case SDLK_f:
-					_settings->fullscreen = !_settings->fullscreen;
-					video_toggle_fullscreen();
 					break;
 				default:
 					break;
@@ -257,8 +249,6 @@ static void _read_settings(void) {
 			return;
 		} else if (strcmp(buffer2, "SOUND") == 0)
 			_settings->sound = (Uint8) uint32;
-		else if (strcmp(buffer2, "FULLSCREEN") == 0)
-			_settings->fullscreen = (Uint8) uint32;
 		else if (strcmp(buffer2, "MOUSESPEED") == 0)
 			_settings->mouse_speed = (Uint8) uint32;
 	}
@@ -271,15 +261,14 @@ static void _save_settings(void) {
 	if ((file = fopen(SETTINGSFILE, "w")) == NULL)
 		return;
 	fprintf(file, "SOUND %d\n", _settings->sound);
-	fprintf(file, "FULLSCREEN %d\n", _settings->fullscreen);
 	fprintf(file, "MOUSESPEED %d\n", _settings->mouse_speed);
 	fclose(file);
 }
 
 static void _tuxpuck_init(void) {
-#ifndef windows
+
 	char *homeDir = NULL;
-#endif
+
 	srand(time(NULL));
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	audio_init();
@@ -289,16 +278,13 @@ static void _tuxpuck_init(void) {
 	_settings = (Settings *) malloc(sizeof(Settings));
 	memset(_settings, 0, sizeof(Settings));
 	_settings->sound = 1;
-	_settings->fullscreen = 0;
 	_settings->mouse_speed = 5;
-#ifndef windows
+
 	homeDir = getenv("HOME");
 	sprintf(_settings_file, "%s/.tuxpuckrc", homeDir);
-#endif
+
 	_read_settings();
 	audio_set_mute(!_settings->sound);
-	if (_settings->fullscreen)
-		video_toggle_fullscreen();
 
 	run_intro();
 	video_save();
@@ -313,19 +299,10 @@ static void _tuxpuck_deinit(void) {
 }
 
 Menu* create_game_menu() {
-	Menu* main_menu = menu_create(3);
+	Menu* main_menu = menu_create(2);
 	menu_add_field(main_menu, 0, 1, "Play");
-	menu_add_field(main_menu, 1, 1, "Game Options");
-	menu_add_field(main_menu, 2, 1, "Exit");
+	menu_add_field(main_menu, 1, 1, "Exit");
 	return main_menu;
-}
-
-Menu* create_option_menu() {
-	Menu* option_menu = menu_create(3);
-	menu_add_field(option_menu, 0, 1, "Fullscreen");
-	menu_add_field(option_menu, 1, 1, "Windowed");
-	menu_add_field(option_menu, 2, 1, "Back");
-	return option_menu;
 }
 
 Menu* create_opponent_menu() {
@@ -352,13 +329,12 @@ int main(int argc, char *argv[]) {
 
 	printf("Here we go!\n");
 
-	int next_opponent, option;
-	Menu *main_menu, *opponent_menu, *option_menu;
+	int next_opponent;
+	Menu *main_menu, *opponent_menu;
 
 	_tuxpuck_init();
 	main_menu = create_game_menu();
 	opponent_menu = create_opponent_menu();
-	option_menu = create_option_menu();
 	int loop = 1;
 	while (loop) {
 		int selection = menu_get_selected(main_menu);
@@ -377,28 +353,6 @@ int main(int argc, char *argv[]) {
 				next_opponent = _play_match(next_opponent);
 			break;
 		case 1:
-			printf("To be implemented\n");
-			int option_loop = 1;
-			while (option_loop) {
-				option = menu_get_selected(option_menu);
-				printf("option %i\n", option);
-
-				if (option == 0) {
-					Uint32 uint32 = 1;
-					_settings->fullscreen = (Uint8) uint32;
-				}
-				if (option == 1) {
-					Uint32 uint32 = 0;
-					_settings->fullscreen = (Uint8) uint32;
-				}
-				if (option == 2) {
-					option_loop = 0;
-
-				}
-			}
-
-			break;
-		case 2:
 			loop = 0;
 			break;
 		default:
@@ -407,7 +361,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	menu_free(opponent_menu);
-	menu_free(option_menu);
 	menu_free(main_menu);
 	_tuxpuck_deinit();
 	return 0;
