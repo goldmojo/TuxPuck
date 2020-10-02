@@ -175,7 +175,7 @@ void video_box_up(SDL_Surface * surface, Uint32 time_limit)
   Sint16 temp_x, temp_y;
   Timer *timer = NULL;
 
-  timer = timer_create();
+  timer = timer_create2();
   timer_reset(timer);
   while (loop && elapsed_time < time_limit) {
     while (SDL_PollEvent(&event))
@@ -217,7 +217,7 @@ void video_fade(SDL_Surface * to, Uint32 time_limit)
   Uint32 elapsed_time = 0;
   Uint8 loop = 1;
 
-  timer = timer_create();
+  timer = timer_create2();
   timer_reset(timer);
   while (loop) {
     while (SDL_PollEvent(&event))

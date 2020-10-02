@@ -113,7 +113,7 @@ static int _play_match(Uint8 opponent) {
 	menu_add_field(again_menu, 0, 1, "Play Again");
 	menu_add_field(again_menu, 1, 1, "Main Menu");
 
-	timer = timer_create();
+	timer = timer_create2();
 	timer_reset(timer);
 	while (loop) {
 		while (SDL_PollEvent(&event))

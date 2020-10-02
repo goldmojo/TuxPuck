@@ -1,5 +1,9 @@
 # Makefile for TuxPuck , Copyright Jacob Kroon 2001-2002
-CC		= gcc
+TOOLCHAIN	= /opt/gcw0-toolchain/usr
+CC			= $(TOOLCHAIN)/bin/mipsel-linux-gcc
+
+CFLAGS		+= -g -Wall -ansi -O3 -march=mips32r2 -mtune=mips32r2
+
 SOURCES		= pad_png.c puck_png.c tux_png.c glass_png.c scoreboard_png.c \
 		  arcana_png.c buff_png.c a1d2_png.c smasher_png.c lex_png.c \
 		  morth_png.c sam_png.c coler_png.c tin_png.c mousebar_png.c title_jpg.c board_jpg.c \

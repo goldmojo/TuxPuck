@@ -157,7 +157,7 @@ void sprite_erase(Sprite *);
 Uint8 sprite_update(Sprite *, Uint32);
 void sprite_set_position(Sprite *, Uint32, Uint32);
 void sprite_set_animation(Sprite *, Uint8);
-Timer *timer_create(void);
+Timer *timer_create2(void);
 void timer_free(Timer *);
 void timer_reset(Timer *);
 void timer_update(Timer *);

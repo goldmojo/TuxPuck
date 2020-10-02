@@ -39,7 +39,7 @@ void run_intro(void) {
 	font = font_create(monos_fnt, NULL);
 	font_set_color(font, 170, 140, 110);
 	font_set_pen(font, 70, logo_rect.y + sdl_logo->h);
-	timer = timer_create();
+	timer = timer_create2();
 	timer_reset(timer);
 	while (loop) {
 		while (SDL_PollEvent(&event))

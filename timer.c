@@ -10,7 +10,7 @@ struct _Timer {
 };
 
 /* functions */
-Timer *timer_create(void)
+Timer *timer_create2(void)
 {
   Timer *timer = NULL;
 

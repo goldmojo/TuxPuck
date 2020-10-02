@@ -1,0 +1,8 @@
+utils/anim
+utils/data2c
+utils/ttf2font
+data/*.c
+data/*.o
+data/libdata.a
+*.o
+tuxpuck
