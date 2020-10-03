@@ -25,8 +25,7 @@ static Uint32 _no_dirty_rects = 0;
 int video_init(void)
 {
   if ((_screen =
-       SDL_SetVideoMode(SCREEN_W, SCREEN_H, 0,
-			SDL_SWSURFACE | SDL_HWSURFACE)) < 0)
+       SDL_SetVideoMode(SCREEN_W, SCREEN_H, 0, SDL_HWSURFACE | SDL_HWACCEL | SDL_FULLSCREEN)) < 0)
     return -1;
   SDL_WM_SetCaption("TuxPuck v" _VERSION, "TuxPuck v" _VERSION);
   /* SDL_ShowCursor(0); */
