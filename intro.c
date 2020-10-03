@@ -43,7 +43,7 @@ void run_intro(void) {
 	timer_reset(timer);
 	while (loop) {
 		while (SDL_PollEvent(&event))
-			if (event.type == SDL_KEYUP)
+			if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN)
 				loop = 0;
 		
 		timer_update(timer);

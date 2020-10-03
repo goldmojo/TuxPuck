@@ -109,7 +109,7 @@ static int _play_match(Uint8 opponent) {
 	timer_reset(timer);
 	while (loop) {
 		while (SDL_PollEvent(&event))
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
+			if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
 				loop = 0;
 				alpha = 1.0;
 			}

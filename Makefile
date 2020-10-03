@@ -1,6 +1,6 @@
 # Makefile for TuxPuck , Copyright Jacob Kroon 2001-2002
 NAME		= tuxpuck
-VERSION		= 0.9.0-prealpha1
+VERSION		= 0.9.0-RG350-r1
 
 TOOLCHAIN	= /opt/gcw0-toolchain/usr
 CC			= $(TOOLCHAIN)/bin/mipsel-linux-gcc
