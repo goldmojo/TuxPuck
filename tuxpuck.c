@@ -93,20 +93,21 @@ static int _play_match(Uint8 opponent) {
 	board_init();
 	scoreboard_init();
 	video_save();
-	p1 = human_create(board_get_pad(1), "Human");
 
+	p1 = human_create(board_get_pad(1), "Human");
 	p2 = select_opponent(opponent);
-	SDL_ShowCursor(SDL_DISABLE);
 
 	exit_menu = menu_create(2);
 	menu_add_field(exit_menu, 0, 1, "Continue");
 	menu_add_field(exit_menu, 1, 1, "Surrender");
+
 	again_menu = menu_create(2);
 	menu_add_field(again_menu, 0, 1, "Play Again");
 	menu_add_field(again_menu, 1, 1, "Main Menu");
 
 	timer = timer_create2();
 	timer_reset(timer);
+	
 	while (loop) {
 		while (SDL_PollEvent(&event))
 			if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
@@ -155,7 +156,6 @@ static int _play_match(Uint8 opponent) {
 				switch (event.key.keysym.sym) {
 				/* SELECT */
 				case SDLK_ESCAPE:
-					SDL_ShowCursor(SDL_ENABLE);
 					if (menu_get_selected(exit_menu) == 1)
 						loop = 0;
 					timer_reset(timer);

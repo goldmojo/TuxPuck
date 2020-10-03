@@ -27,10 +27,8 @@ int video_init(void)
   if ((_screen =
        SDL_SetVideoMode(SCREEN_W, SCREEN_H, 0, SDL_HWSURFACE | SDL_HWACCEL | SDL_FULLSCREEN)) < 0)
     return -1;
-  SDL_WM_SetCaption("TuxPuck v" _VERSION, "TuxPuck v" _VERSION);
-  /* SDL_ShowCursor(0); */
-  SDL_ShowCursor(SDL_ENABLE);
-    _dirty_rect = (SDL_Rect *) malloc(MAX_RECTS * sizeof(SDL_Rect));
+  SDL_ShowCursor(SDL_DISABLE);
+  _dirty_rect = (SDL_Rect *) malloc(MAX_RECTS * sizeof(SDL_Rect));
   return 0;
 }
 
