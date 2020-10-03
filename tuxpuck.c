@@ -155,7 +155,6 @@ static int _play_match(Uint8 opponent) {
 				switch (event.key.keysym.sym) {
 				/* SELECT */
 				case SDLK_ESCAPE:
-
 					SDL_ShowCursor(SDL_ENABLE);
 					if (menu_get_selected(exit_menu) == 1)
 						loop = 0;
@@ -166,15 +165,15 @@ static int _play_match(Uint8 opponent) {
 					_settings->sound = !_settings->sound;
 					audio_set_mute(!_settings->sound);
 					break;
-				/* L2 */
-				case SDLK_PAGEUP:
+				/* B */
+				case SDLK_LALT:
 					if (_settings->mouse_speed > 1)
 						_settings->mouse_speed--;
 					human_set_speed(p1, _settings->mouse_speed);
 					scoreboard_set_mousebar(_settings->mouse_speed);
 					break;
-				/* R2 */
-				case SDLK_PAGEDOWN:
+				/* A */
+				case SDLK_LCTRL:
 					if (_settings->mouse_speed < 10)
 						_settings->mouse_speed++;
 					human_set_speed(p1, _settings->mouse_speed);
@@ -306,7 +305,7 @@ Menu* create_game_menu() {
 }
 
 Menu* create_opponent_menu() {
-	Menu* op_menu = menu_create(12);
+	Menu* op_menu = menu_create(11);
 	menu_add_field(op_menu, 0, 0, "Opponent");
 	menu_add_field(op_menu, 1, 1, "Sam");
 	menu_add_field(op_menu, 2, 1, "Tin");
@@ -318,15 +317,12 @@ Menu* create_opponent_menu() {
 	menu_add_field(op_menu, 8, 1, "Buff");
 	menu_add_field(op_menu, 9, 1, "A1d2");
 	menu_add_field(op_menu, 10, 1, "Tux");
-	menu_add_field(op_menu, 11, 1, "Back");
-
 	return op_menu;
-
 }
 
 /* main method*/
 int main(int argc, char *argv[]) {
-
+	
 	printf("Here we go!\n");
 
 	int next_opponent;
@@ -339,7 +335,7 @@ int main(int argc, char *argv[]) {
 	while (loop) {
 		int selection = menu_get_selected(main_menu);
 
-		printf("selection is %i\n", selection);
+		printf("Main menu selection is %i\n", selection);
 		switch (selection) {
 
 		/* Escape was pressed.*/

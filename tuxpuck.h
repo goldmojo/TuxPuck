@@ -27,10 +27,16 @@
 #define BOARD_STATE_PLAY	1
 #define BOARD_STATE_NEW_PUCK	2
 #define BOARD_STATE_CRASH_GLASS	3
-#define BOARD_TOP		((float)175)
-#define BOARD_BOTTOM		((float)465)
-#define BOARD_LEFT		((float)203)
-#define BOARD_RIGHT		((float)517)
+/*Board top line*/
+#define BOARD_TOP		((float)87)
+/*Board bottom line*/
+#define BOARD_BOTTOM	((float)232)
+/*Top line width*/
+#define BOARD_LEFT		((float)102)
+/*Bottom line width*/
+#define BOARD_RIGHT		((float)258)
+/*Magic number*/
+#define BOARD_SCALE				6.35
 #define PLAYER_STATE_IDLE		1
 #define PLAYER_STATE_SERVE		2
 #define PLAYER_STATE_AIM		3

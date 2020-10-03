@@ -91,7 +91,7 @@ void entity_blit(Entity * e) {
 	scale = board_calc_scale(e->z);
 	scaled_surface = video_scale_surface(e->sdl_image, scale);
 	e->rect.x = (Sint16) (SCREEN_W / 2 - scaled_surface->w / 2 + scale * e->x
-			* 12.7);
+			* BOARD_SCALE);
 	e->rect.y = (Sint16) (board_calc_y(e->z) - scaled_surface->h * e->y_scale);
 	video_set_alpha(scaled_surface, e->alpha);
 	video_blit(scaled_surface, NULL, &e->rect);

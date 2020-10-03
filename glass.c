@@ -85,7 +85,7 @@ static void _piece_blit(Piece * piece) {
 	scale = board_calc_scale(piece->z);
 	y = board_calc_y(piece->z) - piece->y * scale;
 	scaled_surface = video_scale_surface(piece->sdl_image, scale);
-	piece->rect.x = (Sint16) (SCREEN_W / 2 + scale * piece->x * 12.7);
+	piece->rect.x = (Sint16) (SCREEN_W / 2 + scale * piece->x * BOARD_SCALE);
 	piece->rect.y = (Sint16) (y - scaled_surface->h);
 	video_blit(scaled_surface, NULL, &piece->rect);
 	SDL_FreeSurface(scaled_surface);
@@ -213,7 +213,7 @@ void glass_blit(void) {
 	y = board_calc_y(_z);
 	scaled_surface = video_scale_surface(_sdl_glass, scale);
 	_rect.x = (Sint16) (SCREEN_W / 2 - scaled_surface->w / 2 + scale * _x
-			* 12.7);
+			* BOARD_SCALE);
 	_rect.y = (Sint16) (y - scaled_surface->h);
 	video_blit(scaled_surface, NULL, &_rect);
 	SDL_FreeSurface(scaled_surface);

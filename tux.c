@@ -84,7 +84,7 @@ AIPlayer *tux_create(Pad * pad, Puck * puck)
   player->rect.y = BOARD_TOP - player->sdl_image->h;
   player->rect.w = player->rect.h = 0;
   _spr_eyes = sprite_create(tux_eyes_spr, NULL);
-  sprite_set_position(_spr_eyes, 292, 47);
+  sprite_set_position(_spr_eyes, 146, 23);
   _snd_apps = audio_create_sound(tux_apps_ogg, NULL);
   _snd_boos = audio_create_sound(tux_boos_ogg, NULL);
   if (_snd_apps)

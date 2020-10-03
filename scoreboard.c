@@ -4,12 +4,12 @@
 #include "tuxpuck.h"
 
 /* defines */
-#define SCOREBOARD_POSITION	((Uint16)460)
+#define SCOREBOARD_POSITION	((Uint16)230)
 #define SCOREBOARD_STATE_IDLE	1
 #define SCOREBOARD_STATE_ADD_1	2
 #define SCOREBOARD_STATE_ADD_2	3
-#define LINE_WIDTH		((Uint32)3)
-#define LINE_HEIGHT		((Uint32)22)
+#define LINE_WIDTH		((Uint32)2)
+#define LINE_HEIGHT		((Uint32)11)
 #define MOUSEBAR_TIMEOUT	((Uint32)2000)
 #define MOUSEBAR_FADOUT_SPEED	((float)0.001)
 
@@ -29,8 +29,8 @@ static void _blit_point(Uint8 who, Uint8 point) {
 	SDL_Rect rect;
 
 	point -= 1;
-	rect.x = SCOREBOARD_POSITION + 18 + point * 8 + (point / 5 - 1) * 4;
-	rect.y = 27 + who * 26;
+	rect.x = SCOREBOARD_POSITION + 9 + point * 4 + (point / 5 - 1) * 2;
+	rect.y = 13 + who * 13;
 	rect.w = LINE_WIDTH;
 	rect.h = LINE_HEIGHT;
 	video_fill(video_map_rgb(255, 255, 255), 255, &rect);
@@ -93,14 +93,14 @@ void scoreboard_reblit(void) {
 		_p2_scored = 0;
 	}
 	if (_mousebar_alpha > 0) {
-		rect.x = SCOREBOARD_POSITION + 7;
-		rect.y = 96;
-		rect.w = (Uint16) (138.0 * _mouse_speed / 10.0);
-		rect.h = 13;
-		video_fill(video_map_rgb(0, 0, 128), (Uint8) (_mousebar_alpha * 255.0),
+		rect.x = SCOREBOARD_POSITION + 3;
+		rect.y = 48;
+		rect.w = (Uint16) (69.0 * _mouse_speed / 10.0);
+		rect.h = 7;
+		video_fill(video_map_rgb(6, 42, 119), (Uint8) (_mousebar_alpha * 255.0),
 				&rect);
 		_mousebar_rect.x = SCOREBOARD_POSITION;
-		_mousebar_rect.y = 90;
+		_mousebar_rect.y = 45;
 		video_set_alpha(_sdl_mousebar, (Uint8) (_mousebar_alpha * 255.0));
 		video_blit(_sdl_mousebar, NULL, &_mousebar_rect);
 	}
