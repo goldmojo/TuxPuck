@@ -25,7 +25,7 @@ static Uint32 _no_dirty_rects = 0;
 int video_init(void)
 {
   if ((_screen =
-       SDL_SetVideoMode(SCREEN_W, SCREEN_H, 0, SDL_HWSURFACE | SDL_HWACCEL | SDL_FULLSCREEN)) < 0)
+       SDL_SetVideoMode(SCREEN_W, SCREEN_H, 0, SDL_SWSURFACE | SDL_HWSURFACE | SDL_HWACCEL | SDL_FULLSCREEN)) < 0)
     return -1;
   SDL_ShowCursor(SDL_DISABLE);
   _dirty_rect = (SDL_Rect *) malloc(MAX_RECTS * sizeof(SDL_Rect));
@@ -75,10 +75,7 @@ void video_erase(SDL_Rect * rect)
 
 void video_set_alpha(SDL_Surface * surface, Uint8 alpha)
 {
-  if (alpha == 255)
-    SDL_SetAlpha(surface, 0, 0);
-  else
-    SDL_SetAlpha(surface, SDL_SRCALPHA | SDL_RLEACCEL, alpha);
+  SDL_SetAlpha(surface, SDL_SRCALPHA | SDL_RLEACCEL, alpha);
 }
 
 void video_fill(Uint32 color, Uint8 alpha, SDL_Rect * rect)
