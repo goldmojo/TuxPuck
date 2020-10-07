@@ -2,7 +2,6 @@
 
 #include <stdlib.h>
 #include <SDL_video.h>
-#include <SDL_mouse.h>
 #include <SDL_events.h>
 #include <SDL_timer.h>
 #include "video.h"
@@ -158,7 +157,7 @@ void video_box_up(SDL_Surface * surface, Uint32 time_limit)
   timer_reset(timer);
   while (loop && elapsed_time < time_limit) {
     while (SDL_PollEvent(&event))
-      if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN)
+      if (event.type == SDL_KEYDOWN)
 	loop = 0;
     timer_update(timer);
     elapsed_time = timer_elapsed(timer);
@@ -200,7 +199,7 @@ void video_fade(SDL_Surface * to, Uint32 time_limit)
   timer_reset(timer);
   while (loop) {
     while (SDL_PollEvent(&event))
-      if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN)
+      if (event.type == SDL_KEYDOWN)
 	loop = 0;
     timer_update(timer);
     elapsed_time = timer_elapsed(timer);

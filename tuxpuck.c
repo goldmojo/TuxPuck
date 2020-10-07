@@ -16,7 +16,15 @@
 typedef struct {
 	Uint8 sound;
 	Uint8 mouse_speed;
+	Uint8 joystick_side;
 } Settings;
+
+/* Joystick */
+SDL_Joystick* GCW_JOYSTICK;
+Sint16 GCW_JOYSTICK_DEADZONE;
+int GCW_JOYSTIC2MOUSE_SPEEDSTEP;
+int GCW_JOYSTICK_X_MOVE;
+int GCW_JOYSTICK_Y_MOVE;
 
 /* statics */
 static Settings *_settings = NULL;
@@ -110,7 +118,7 @@ static int _play_match(Uint8 opponent) {
 	
 	while (loop) {
 		while (SDL_PollEvent(&event))
-			if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
+			if (event.type == SDL_KEYDOWN) {
 				loop = 0;
 				alpha = 1.0;
 			}
@@ -152,6 +160,34 @@ static int _play_match(Uint8 opponent) {
 	while (loop) {
 		while (SDL_PollEvent(&event))
 			switch (event.type) {
+			/* Joystick */
+			case SDL_JOYAXISMOTION:
+				/* Map stick to mouse */
+				/* Left */
+				if(SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side)<-GCW_JOYSTICK_DEADZONE) {
+					GCW_JOYSTICK_X_MOVE = (SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side) / GCW_JOYSTIC2MOUSE_SPEEDSTEP) - 1;
+				}
+				/* Right */
+				if(SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side)>GCW_JOYSTICK_DEADZONE) {
+					GCW_JOYSTICK_X_MOVE = (SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side) / GCW_JOYSTIC2MOUSE_SPEEDSTEP) + 1;
+				}
+				/* Up */
+				if(SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side+1)<-GCW_JOYSTICK_DEADZONE) {
+					GCW_JOYSTICK_Y_MOVE = (SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side+1) / GCW_JOYSTIC2MOUSE_SPEEDSTEP) - 1;
+				}
+				/* Down */
+				if(SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side+1)>GCW_JOYSTICK_DEADZONE) {
+					GCW_JOYSTICK_Y_MOVE = (SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side+1) / GCW_JOYSTIC2MOUSE_SPEEDSTEP) + 1;
+				}
+				/* Release movement if necessary */
+				if((SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side)>-GCW_JOYSTICK_DEADZONE) && (SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side)<GCW_JOYSTICK_DEADZONE)) {
+					GCW_JOYSTICK_X_MOVE = 0;
+				}
+				if((SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side+1)>-GCW_JOYSTICK_DEADZONE) && (SDL_JoystickGetAxis(GCW_JOYSTICK,_settings->joystick_side+1)<GCW_JOYSTICK_DEADZONE)) {
+					GCW_JOYSTICK_Y_MOVE = 0;
+				}
+				break;
+			/* Key down */
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 				/* SELECT */
@@ -179,6 +215,14 @@ static int _play_match(Uint8 opponent) {
 					human_set_speed(p1, _settings->mouse_speed);
 					scoreboard_set_mousebar(_settings->mouse_speed);
 					break;
+				/* L2 */
+				case SDLK_PAGEUP:
+					_settings->joystick_side = 0;
+					break;
+				/* R2 */
+				case SDLK_PAGEDOWN:
+					_settings->joystick_side = 2;
+					break;
 				default:
 					break;
 				}
@@ -191,7 +235,7 @@ static int _play_match(Uint8 opponent) {
 		timer_update(timer);
 		timer_reset(timer);
 		elapsed_time = timer_elapsed(timer);
-		human_update(p1, elapsed_time);
+		human_update(p1, elapsed_time, GCW_JOYSTICK_X_MOVE, GCW_JOYSTICK_Y_MOVE);
 		aiplayer_update(p2, elapsed_time);
 		scoreboard_update(elapsed_time);
 		if ((scorer = board_update(elapsed_time)) != 0) {
@@ -250,6 +294,8 @@ static void _read_settings(void) {
 			_settings->sound = (Uint8) uint32;
 		else if (strcmp(buffer2, "MOUSESPEED") == 0)
 			_settings->mouse_speed = (Uint8) uint32;
+		else if (strcmp(buffer2, "JOYSIDE") == 0)
+			_settings->joystick_side = (Uint8) uint32;
 	}
 	fclose(file);
 }
@@ -261,6 +307,7 @@ static void _save_settings(void) {
 		return;
 	fprintf(file, "SOUND %d\n", _settings->sound);
 	fprintf(file, "MOUSESPEED %d\n", _settings->mouse_speed);
+	fprintf(file, "JOYSIDE %d\n", _settings->joystick_side);
 	fclose(file);
 }
 
@@ -269,7 +316,18 @@ static void _tuxpuck_init(void) {
 	char *homeDir = NULL;
 
 	srand(time(NULL));
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+
+	SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+
+	SDL_JoystickEventState(SDL_ENABLE);
+	GCW_JOYSTICK = SDL_JoystickOpen(0);
+	GCW_JOYSTICK_DEADZONE = 500;
+	/* Maximum joystick value is 32768
+	   Will change mouse speed every 4000 */
+	GCW_JOYSTIC2MOUSE_SPEEDSTEP = 4000;
+	GCW_JOYSTICK_X_MOVE = 0;
+	GCW_JOYSTICK_Y_MOVE = 0;
+	
 	audio_init();
 	video_init();
 
@@ -278,6 +336,8 @@ static void _tuxpuck_init(void) {
 	memset(_settings, 0, sizeof(Settings));
 	_settings->sound = 1;
 	_settings->mouse_speed = 5;
+	/* 0 = left - 2 = right */
+	_settings->joystick_side = 0;
 
 	homeDir = getenv("HOME");
 	sprintf(_settings_file, "%s/.tuxpuckrc", homeDir);

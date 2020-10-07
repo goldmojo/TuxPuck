@@ -2,7 +2,6 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <SDL_mouse.h>
 #include "video.h"
 #include "tuxpuck.h"
 
@@ -129,11 +128,8 @@ void human_set_speed(HumanPlayer * human, Uint8 speed)
     MIN_MOUSE_SPEED + (MAX_MOUSE_SPEED - MIN_MOUSE_SPEED) * speed / 10.0;
 }
 
-void human_update(HumanPlayer * human, Uint32 time)
+void human_update(HumanPlayer * human, Uint32 time, int dx, int dy)
 {
-  int dx, dy;
-
-  SDL_GetRelativeMouseState(&dx, &dy);
   if (time != 0)
     entity_set_velocity(human->pad, (float) dx / time * human->speed,
 			(float) -dy / time * human->speed);

@@ -144,7 +144,7 @@ void human_free(HumanPlayer *);
 void human_set_speed(HumanPlayer *, Uint8);
 void human_give_point(HumanPlayer *);
 Uint8 human_get_points(HumanPlayer *);
-void human_update(HumanPlayer *, Uint32);
+void human_update(HumanPlayer *, Uint32, int, int);
 void aiplayer_blit(AIPlayer *);
 void aiplayer_erase(AIPlayer *);
 void aiplayer_update(AIPlayer *, Uint32);
