@@ -31,9 +31,14 @@ TuxPuck - www.efd.lth.se/~d00jkr/tuxpuck/
  The binary will be placed in /usr/bin and the manpage in
  /usr/man/man6.
 
- - Usage
+ - Usage (RG350 port)
 
- MOUSE	Move the pad
- START	Toggle sound on/off
- L2/R2	Change mouse speed
- SELECT Exit game
+STICK    Move the pad
+A        Increase pad velocity
+B        Decrease pad velocity
+
+L2       Use LEFT stick (preference is saved)
+R2       Use RIGHT stick (preference is saved)
+START    Mute/Unmute sound (preference is saved)
+
+SELECT   Exit game
